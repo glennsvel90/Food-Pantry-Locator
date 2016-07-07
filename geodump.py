@@ -19,4 +19,18 @@ for row in cursor:
 	if not('status' in js and js['status'] =='OK'):
 		continue
 	lat=js["results"][0]["geometry"]["location"]["lat"]
-	lng=js["results"]
+	lng=js["results"][0]["geometry"]["location"]["lng"]
+	if lat ==0 or lng==0:
+		continue
+	where=js['results'][0]['formatted_address']
+	where=where.replace("'","")
+	try:
+		print where,lat,lng
+		count=count+1
+		if count>1:
+			fhand.write(",\n")
+		output="["+str(lat)+","+str(lng)+",'"+where+"']"
+		fhand.write(output)
+	except:
+		continue
+		
