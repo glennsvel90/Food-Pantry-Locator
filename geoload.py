@@ -6,10 +6,10 @@ import ssl
 
 serviceurl = "http://maps.googleapis.com/maps/api/geocode/json?"
 scontext=None
-conn=sqlite3.connect('geodata.sqlitle')
+conn=sqlite3.connect('geodata.sqlite')
 cur=conn.cursor()
 
-cur.execute(''' CREATE TABLE IF NOT EXISTS locations (address TEXT, geodata TEXT)''')
+cur.execute(''' CREATE TABLE IF NOT EXISTS Locations (address TEXT, geodata TEXT)''')
 
 fh=open("where.data")
 count=0
@@ -18,7 +18,7 @@ for line in fh:
 		break
 	address=line.strip()
 	print ""
-	cur.execute("SELECT geodata FROM locations WHERE address=?", (buffer(address), ))
+	cur.execute("SELECT geodata FROM Locations WHERE address=?", (buffer(address), ))
 	#try to fetch the geodata from database
 	try:
 		data=cur.fetchone()[0]
@@ -44,49 +44,9 @@ for line in fh:
 		print data
 		break
 
-	cur.execute('''INSERT INTO Locations(address. geodata))
+	cur.execute('''INSERT INTO Locations (address, geodata)
 			VALUES (?,?)''', (buffer(address),buffer(data)))
 	conn.commit()
 	time.sleep(1)
 
 print "Run geodump.py to read the data from the database so you can visualize it on a map."
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

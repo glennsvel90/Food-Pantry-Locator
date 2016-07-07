@@ -2,16 +2,16 @@ import sqlite3
 import json
 import codecs
 
-conn=sqlite3.connect('deodata.sqlite')
+conn=sqlite3.connect('geodata.sqlite')
 cur=conn.cursor()
 
 cur.execute('SELECT * FROM Locations')
 fhand=codecs.open('where.js','w','utf-8')
 fhand.write("myData=[\n")
 count=0
-for row in cursor:
+for row in cur:
 	data=str(row[1])
-	try: 
+	try:
 		js=json.loads(str(data))
 	except:
 		continue
