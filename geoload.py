@@ -29,8 +29,27 @@ for line in fh:
 	print "Resolving" , address
 	url=serviceurl+urllib.urlencode({"sensor":"false", "address": address})
 	print "Retrieving", url
-	uh=urllib.urlopen()
+	uh=urllib.urlopen(url, context=scontext)
+	data=uh.read()
+	print "Retrieved",len(data), "characterers", data[:20].replace('\n',' ')
+	count=count+1
+	try:
+		js=json.loads(str(data))
+		#print js #We print to debug just in case unicode causes an error
+	except:
+		continue
 
+	if "status" not in js or (js["status"] != "OK" and js["status"]!= "ZERO_RESLTS"):
+		print"==== Failure To Retrieve===="
+		print data
+		break
+
+	cur.execute('''INSERT INTO Locations(address. geodata))
+			VALUES (?,?)''', (buffer(address),buffer(data)))
+	conn.commit()
+	time.sleep(1)
+
+print "Run geodump.py to read the data from the database so you can visualize it on a map."
 
 
 
