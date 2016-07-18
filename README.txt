@@ -1,5 +1,3 @@
-
-
 Creating a map of food pantries in the South Bronx
 using the Google Geocoding API with a SQLite3 Database
 
