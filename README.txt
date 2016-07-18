@@ -1,4 +1,4 @@
-Structure for this open-source project was through www.py4inf.com/code/geodata.zip
+
 
 Creating a map of food pantries in the South Bronx
 using the Google Geocoding API with a SQLite3 Database
@@ -106,3 +106,5 @@ can hover over each map pin to find the location that the
 gecoding API returned for the user-entered input.  If you
 cannot see any data when you open the where.html file, you might
 want to check the JavaScript or developer console for your browser.
+
+Structure for this open-source project was through www.py4inf.com/code/geodata.zip
