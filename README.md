@@ -1,2 +1,2 @@
 # food-resources
-App that shows food pantries around the SouthBronx neighborhood for homeless families
+App that shows food pantries around New York's South Bronx neighborhood to help homeless families
