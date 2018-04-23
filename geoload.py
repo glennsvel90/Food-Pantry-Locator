@@ -1,4 +1,4 @@
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import sqlite3
 import json
 import time
@@ -26,26 +26,31 @@ fh = open("where.data")
 count = 0
 for line in fh:
     if count > 200 :
-        print 'Retrieved 200 locations, restart to retrieve more'
+        print('Retrieved 200 locations, restart to retrieve more')
         break
     address = line.strip()
-    print ''
-    cur.execute("SELECT geodata FROM Locations WHERE address= ?", (buffer(address), ))
+    print('')
+    cur.execute("SELECT geodata FROM Locations WHERE address= ?", (memoryview(address.encode()), ))
 
     try:
         data = cur.fetchone()[0]
-        print "Found in database ",address
+        print("Found in database ",address)
         continue
     except:
         pass
 
-    print 'Resolving', address
-    url = serviceurl + urllib.urlencode({"sensor":"false", "address": address})
-    print 'Retrieving', url
-    uh = urllib.urlopen(url, context=scontext)
-    data = uh.read()
-    print 'Retrieved',len(data),'characters',data[:20].replace('\n',' ')
+    print('Resolving', address)
+    url = serviceurl + urllib.parse.urlencode({"sensor":"false", "address": address})
+
+
+
+    print('Retrieving', url)
+    uh = urllib.request.urlopen(url, context=scontext)
+    data = uh.read().decode()
+    print('Retrieved',len(data),'characters',data[:20].replace('\n',' '))
     count = count + 1
+
+
     try:
         js = json.loads(str(data))
         # print js  # We print in case unicode causes an error
@@ -53,12 +58,12 @@ for line in fh:
         continue
 
     if 'status' not in js or (js['status'] != 'OK' and js['status'] != 'ZERO_RESULTS') :
-        print '==== Failure To Retrieve ===='
-        print data
+        print('==== Failure To Retrieve ====')
+        print(data)
         continue
 
     cur.execute('''INSERT INTO Locations (address, geodata)
-            VALUES ( ?, ? )''', ( buffer(address),buffer(data) ) )
+            VALUES ( ?, ? )''', ( memoryview(address.encode()),memoryview(data.encode()) ) )
     conn.commit()
     if count % 10 == 0 :
         print('Pausing for a bit...')
