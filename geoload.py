@@ -1,24 +1,26 @@
 import urllib.request, urllib.parse, urllib.error
+import http
 import sqlite3
 import json
 import time
 import ssl
+import sys
 
 # Google API (requires API key)
-# serviceurl = "http://maps.googleapis.com/maps/api/geocode/json?"
-
-# serviceurl = "http://maps.google.cn/maps/api/geocode/json?"
-
-serviceurl = "http://python-data.dr-chuck.net/geojson?"
+api_key = 'AIzaSy_____________________6Hw'
 
 
-# Deal with SSL certificate anomalies Python > 2.7
-# scontext = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
-scontext = None
+serviceurl = "https://maps.googleapis.com/maps/api/place/textsearch/json?"
+
+
+#Deal with SSL certificate anomalies Python > 2.7
+scontext = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
+#scontext = None
 
 conn = sqlite3.connect('geodata.sqlite')
 cur = conn.cursor()
 
+# cache the json geodata
 cur.execute('''
 CREATE TABLE IF NOT EXISTS Locations (address TEXT, geodata TEXT)''')
 
@@ -40,7 +42,7 @@ for line in fh:
         pass
 
     print('Resolving', address)
-    url = serviceurl + urllib.parse.urlencode({"sensor":"false", "address": address})
+    url = serviceurl + urllib.parse.urlencode({"key": api_key, "query": address})
 
 
 
