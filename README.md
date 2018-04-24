@@ -24,3 +24,7 @@ python geodump.py
 ```
 xdg-open where.html
 ```
+
+## Web App Preview
+
+![alt text](https://github.com/glennsvel90/food-resources/blob/master/mappreview.PNG "Map Preview")
