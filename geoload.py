@@ -9,7 +9,7 @@ import sys
 # Google API (requires API key)
 api_key = 'AIzaSy_____________________6Hw'
 
-
+# Base api url  with json output
 serviceurl = "https://maps.googleapis.com/maps/api/place/textsearch/json?"
 
 
@@ -30,8 +30,10 @@ for line in fh:
     if count > 200 :
         print('Retrieved 200 locations, restart to retrieve more')
         break
+    # make address of the locations in where.data be stored as address variable
     address = line.strip()
     print('')
+    # see if there is already data in the database that has the addresses that is stored in the variable 
     cur.execute("SELECT geodata FROM Locations WHERE address= ?", (memoryview(address.encode()), ))
 
     try:
@@ -40,7 +42,7 @@ for line in fh:
         continue
     except:
         pass
-
+    # get api data from url for specific address
     print('Resolving', address)
     url = serviceurl + urllib.parse.urlencode({"key": api_key, "query": address})
 
